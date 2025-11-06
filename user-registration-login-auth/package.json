@@ -1,0 +1,29 @@
+{
+  "name": "user-registration-login-auth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test-api.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.6.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "axios": "^1.13.2",
+    "nodemon": "^3.1.10"
+  }
+}

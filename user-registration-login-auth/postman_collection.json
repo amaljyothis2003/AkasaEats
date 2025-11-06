@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "AkasaEats Auth Service",
+    "description": "Authentication microservice API endpoints for AkasaEats food ordering platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "apiPrefix",
+      "value": "/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "idToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Check if the auth service is running"
+      }
+    },
+    {
+      "name": "Register User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const jsonData = pm.response.json();",
+              "    pm.environment.set('userId', jsonData.data.uid);",
+              "    pm.environment.set('customToken', jsonData.data.customToken);",
+              "    console.log('User ID:', jsonData.data.uid);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"secure123456\",\n  \"name\": \"John Doe\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/register",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "register"]
+        },
+        "description": "Register a new user with email, password, and name"
+      }
+    },
+    {
+      "name": "Get User by UID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/user/{{userId}}",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "user", "{{userId}}"]
+        },
+        "description": "Retrieve user details by user ID"
+      }
+    },
+    {
+      "name": "Get Profile (Protected)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{idToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/profile",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "profile"]
+        },
+        "description": "Get current user profile (requires valid ID token in Authorization header)"
+      }
+    },
+    {
+      "name": "Update Profile (Protected)",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{idToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Jane Doe\",\n  \"photoURL\": \"https://example.com/photo.jpg\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/profile",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "profile"]
+        },
+        "description": "Update user profile (name and/or photoURL)"
+      }
+    },
+    {
+      "name": "Send Email Verification",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"john.doe@example.com\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/verify-email",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "verify-email"]
+        },
+        "description": "Generate email verification link for a user"
+      }
+    },
+    {
+      "name": "Create Custom Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const jsonData = pm.response.json();",
+              "    pm.environment.set('customToken', jsonData.data.customToken);",
+              "    console.log('Custom token created');",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"uid\": \"{{userId}}\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/custom-token",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "custom-token"]
+        },
+        "description": "Create a custom Firebase token for a user (for testing)"
+      }
+    },
+    {
+      "name": "Logout (Protected)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{idToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/logout",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "logout"]
+        },
+        "description": "Revoke all refresh tokens (logout user from all devices)"
+      }
+    },
+    {
+      "name": "Delete User (Protected)",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{idToken}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}{{apiPrefix}}/auth/user",
+          "host": ["{{baseUrl}}{{apiPrefix}}"],
+          "path": ["auth", "user"]
+        },
+        "description": "Delete user account permanently (requires authentication)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firebase Test</title>
+</head>
+<body>
+    <h1>Firebase Connection Test</h1>
+    <div id="status">Testing...</div>
+    <div id="result"></div>
+    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, signInWithCustomToken } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5LpVJwyZ850MlqWt7nzZ12IhfQyF7MeU",
+            authDomain: "akasaeats.firebaseapp.com",
+            projectId: "akasaeats",
+            storageBucket: "akasaeats.firebasestorage.app",
+            messagingSenderId: "781463082172",
+            appId: "1:781463082172:web:e9c4975a405eb0f05eecb9"
+        };
+        
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        
+        document.getElementById('status').innerHTML = '✅ Firebase initialized successfully!<br>Auth Domain: ' + firebaseConfig.authDomain;
+        
+        // Test login
+        async function testLogin() {
+            try {
+                const response = await fetch('http://localhost:3001/api/v1/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'test@akasaeats.com',
+                        password: 'test123456'
+                    })
+                });
+                
+                const data = await response.json();
+                console.log('Login response:', data);
+                
+                if (data.success && data.data.customToken) {
+                    document.getElementById('result').innerHTML += '<br>✅ Backend login successful<br>Custom token received: ' + data.data.customToken.substring(0, 20) + '...';
+                    
+                    // Try Firebase sign in
+                    const userCredential = await signInWithCustomToken(auth, data.data.customToken);
+                    const idToken = await userCredential.user.getIdToken();
+                    
+                    document.getElementById('result').innerHTML += '<br>✅ Firebase authentication successful!<br>ID Token: ' + idToken.substring(0, 20) + '...';
+                    document.getElementById('result').innerHTML += '<br>✅ User: ' + userCredential.user.email;
+                } else {
+                    document.getElementById('result').innerHTML += '<br>❌ Login failed: ' + JSON.stringify(data);
+                }
+            } catch (error) {
+                document.getElementById('result').innerHTML += '<br>❌ Error: ' + error.message;
+                console.error('Error:', error);
+            }
+        }
+        
+        // Auto-run test
+        setTimeout(testLogin, 1000);
+    </script>
+</body>
+</html>

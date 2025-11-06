@@ -1,0 +1,140 @@
+.navbar {
+  background: var(--white);
+  color: var(--text-primary);
+  padding: 0.75rem 0;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-logo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+
+.navbar-logo-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  letter-spacing: -0.2px;
+}
+
+.navbar-logo:hover {
+  opacity: 0.9;
+}
+
+.navbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar-link {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.navbar-link:hover {
+  color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.cart-link {
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  border-radius: 50%;
+  min-width: 20px;
+  text-align: center;
+}
+
+.navbar-btn {
+  padding: 0.55rem 1.2rem;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-btn:hover {
+  background: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.register-btn {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.register-btn:hover {
+  filter: brightness(0.98);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-primary);
+}
+
+.logout-btn:hover {
+  background: #fff7f0;
+  color: var(--primary-dark);
+}
+
+@media (max-width: 768px) {
+  .navbar-menu {
+    gap: 0.5rem;
+  }
+
+  .navbar-link,
+  .navbar-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar-logo {
+    font-size: 1.5rem;
+  }
+  .navbar-logo-img { height: 36px; }
+  .navbar-logo-text { display: none; }
+}
