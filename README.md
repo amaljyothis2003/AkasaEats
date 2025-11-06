@@ -1,4 +1,4 @@
-# 🍽️ AkasaEats - Food Ordering Platform Backend
+# 🍽️ AkasaEats - Food Ordering Platform
 
 > **Complete backend microservices for a modern food ordering platform**
 
